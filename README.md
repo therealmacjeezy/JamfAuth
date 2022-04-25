@@ -27,8 +27,8 @@ Once you have a valid API Token, you can store it as a variable and use it when 
 
 ---
 ## To-Do List
-[ ] - Save API Token in the keychain and remove it from the JSON config file
-[ ] - Add usage examples
+ - [ ] Save API Token in the keychain and remove it from the JSON config file
+ - [ ] Add usage examples
 
 ---
 ### Importing into a script
