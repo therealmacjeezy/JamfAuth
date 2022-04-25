@@ -28,6 +28,20 @@ Here is how `jamfAuth.py` works:
 Once you have a valid API Token, you can store it as a variable and use it when performing API calls later in the script.
 
 ---
+## Requirements
+### Jamf Pro
+ - A **local** Jamf Pro account that has API Access
+
+### Python
+**Required Python Version:** 3.9 (or newer)
+
+**Required Python Packages:**
+ - json
+ - getpass
+ - requests
+ - keyring
+
+---
 ## To-Do List
  - [ ] Save API Token in the keychain and remove it from the JSON config file
  - [ ] Add usage examples
