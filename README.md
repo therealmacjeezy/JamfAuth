@@ -12,6 +12,8 @@ The script uses a JSON file (`support/.jamfsearch.json`) to store the following 
  - jamfAPIURL
  - apiToken
 
+The API Password is stored in your local keychain.
+
 Here is how `jamfAuth.py` works:
  - The script will first check to see if the JSON file exists or not. 
    - If not, it will prompt you to enter the above information
