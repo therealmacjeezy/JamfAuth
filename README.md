@@ -20,7 +20,7 @@ Here is how `jamfAuth.py` works:
  - Next if an apiToken is found, it will check if it's valid or not
    - If it's not valid, it will attempt to renew it using `keep-alive`
    - If the renew fails, it will check the local keychain for the API Password and attempt to get a new API Token.
-    - If the API Password isn't found in the local keychain, it will prompt you to enter the password
+     - If the API Password isn't found in the local keychain, it will prompt you to enter the password
    - If the renew is successful, the API Token will be saved to the JSON file
 
 Once you have a valid API Token, you can store it as a variable and use it when performing API calls later in the script.
