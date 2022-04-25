@@ -21,9 +21,9 @@ def start_config_check(jamfSearchConfig):
     user_check(data['apiUserName'], jamfSearchConfig, data['jamfAPIURL'])
 
 def host_check(jamfHost, jamfSearchConfig, baseAPIURL):
-    if not jamfHost:
-    #     print(f'[Jamf Pro Host Name]: {jamfHost}')
-    # else:
+    if jamfHost:
+        print(f'[Jamf Pro Host Name]: {jamfHost}')
+    else:
         jamfHost = input(f'Enter the Jamf Pro URL (without https://): \n\t=> ')
         try:
             with open(jamfSearchConfig, 'r') as f:
@@ -37,9 +37,9 @@ def host_check(jamfHost, jamfSearchConfig, baseAPIURL):
         except Exception as errorMessage:
             print(f'Unable to save Jamf Pro HostName to Local Config File..\n')
 
-    if not baseAPIURL:
-    #     print(f'[Jamf Pro API URL]: {baseAPIURL}')
-    # else:
+    if baseAPIURL:
+        print(f'[Jamf Pro API URL]: {baseAPIURL}')
+    else:
         try:
             with open(jamfSearchConfig, 'r') as f:
                 data = json.load(f)
@@ -52,9 +52,9 @@ def host_check(jamfHost, jamfSearchConfig, baseAPIURL):
             print(f'Unable to save Jamf Pro API URL to Local Config File..\n')
 
 def user_check(apiUser, jamfSearchConfig, baseAPIURL):
-    if not apiUser:
-    #     print(f'[Jamf Pro API Username]: {apiUser}')
-    # else:
+    if apiUser:
+        print(f'[Jamf Pro API Username]: {apiUser}')
+    else:
         apiUser = input(f'Enter the Username for API Access: \n')
         try:
             with open(jamfSearchConfig, 'r') as f:
