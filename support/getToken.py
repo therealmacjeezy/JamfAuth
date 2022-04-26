@@ -7,7 +7,7 @@ def check_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig):
 
         if apiResponse.status_code != 200:
             if apiResponse.status_code == 401:
-                print('Your token is invalid :(, attempting to renew it.. hold tight..\n')
+                print('[>jamfAuth] Your token is invalid :(, attempting to renew it.. hold tight..\n')
                 keep_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig)
         else:
             print('[Jamf Pro API Token Status]: Valid')
@@ -22,7 +22,7 @@ def keep_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig):
     apiResponse = requests.post(theURL, headers=headers)
     if apiResponse.status_code != 200:
         if apiResponse.status_code == 401:
-            print('Your token is invalid and cannot be renewed. Why dont we get a new one..\n')
+            print('[>jamfAuth] Your token is invalid and cannot be renewed. Why dont we get a new one..\n')
             get_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig)
             return apiToken
     else:
@@ -35,7 +35,7 @@ def get_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig):
         # print('[>jamfAuth (get_token)] Looking for API Token in the local keychain..')
         apiPassword = keyring.get_password(baseAPIURL, apiUser)
         if not apiPassword:
-            print('[>jamfAuth (get_token)] unable to find keychain entry. lets make one shall we?')
+            print('[>jamfAuth] Unable to find keychain entry. lets make one shall we?')
             apiPassword = getpass.getpass(f'What is the password for {apiUser}: ')
             keyring.set_password(baseAPIURL, apiUser, apiPassword)
     except Exception as errorMessage:
@@ -47,7 +47,6 @@ def get_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig):
 
     try:
         apiResponseJSON = apiResponse.json()
-        print(f'status_code: {apiResponse.status_code}')
         try:
             apiToken = apiResponseJSON['token']
 

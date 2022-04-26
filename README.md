@@ -2,62 +2,90 @@
 
 A python script to authenticate with the Jamf Pro API.
 
-----
-## About
+## To-Do List
+ - [x] Save API Token in the keychain and remove it from the JSON config file
+ - [x] Add usage examples
+ - [ ] Add additional error handling for 401 errors
+
+---
+
+## Overview
 This python script handles the API Authentication to your Jamf Pro Server. Once you have a valid API Token, you can store it as a variable and use it when performing API calls later in the script.
 
 Here is how `jamfAuth.py` works:
  - Checks to see if the JSON Config file exists. 
-   - **JSON Config Found:** Attempts to load the **apiUserName** and **jamfHostName** variables
-   - **JSON Config Not Found:** Creates an empty JSON Config file and prompts you for the following things: **Jamf Pro Host Name**, **API Username**
+   - **✅ JSON Config Found:** Attempts to load the `apiUserName` and `jamfHostName` variables
+   - **⚠️ JSON Config Not Found:** Creates an empty JSON Config file and prompts you for the following things: `Jamf Pro Host Name`, `API Username`
  - Once the above information is entered/loaded, it will check the local keychain for an API Token.
-   - **API Token Found:** Checks to see if the API Token stored is valid
-     - **Valid Token:** Returns the API Token for use
-     - **Invalid Token:** Attempts to renew the API Token (using `keep-alive`). If the API Token is unable to be renewed, it will check the local keychain for the **API Password**
-       - **API Password Keychain Found:** Uses the **API Password** to get a new API Token then saves it to the local keychain then returns it for use
-       - **API Password Keychain Not Found:** Prompts for the API Password, stores it in the local keychain and gets a new API Token then returns it for use
-   - **API Token Not Found:** Checks the local keychain for the **API Password**
-       - **API Password Keychain Found:** Uses the **API Password** to get a new API Token then saves it to the local keychain then returns it for use
-       - **API Password Keychain Not Found:** Prompts for the API Password, stores it in the local keychain and gets a new API Token then returns it for use
+   - **✅ API Token Found:** Checks to see if the API Token stored is valid
+     - **✅ Valid Token:** Returns the API Token for use
+     - **⚠️ Invalid Token:** Attempts to renew the API Token (using `keep-alive`). If the API Token is unable to be renewed, it will check the local keychain for the **API Password**
+       - **✅ API Password Keychain Found:** Uses the `API Password` to get a new API Token then saves it to the local keychain then returns it for use
+       - **⚠️ API Password Keychain Not Found:** Prompts for the API Password, stores it in the local keychain and gets a new API Token then returns it for use
+   - **⚠️ API Token Not Found:** Checks the local keychain for the `API Password`
+       - **✅API Password Keychain Found:** Uses the `API Password` to get a new API Token then saves it to the local keychain then returns it for use
+       - **⚠️ API Password Keychain Not Found:** Prompts for the API Password, stores it in the local keychain and gets a new API Token then returns it for use
 
 
-The **API Password** and **API Token** will be stored in the local keychain using the following naming convention:
+
+The `API Password` and `API Token` will be stored in the local keychain using the following naming convention:
 
 **Variable** | **Keychain Naming Convention**
 ---------------- | --------------
 **API Password** | service = **JamfProHostName**, username = **API Username**, password = **API Password**
 **API Token** | service = **JamfProHostName**, username = **API Username**+API, password = **API Token**
 
+
 The `jamfAuth.py` JSON Configuration file is located in the `support` directory in this repository (`/path/to/jamfAuth/support/.jamfauth.json`)
- 
+
+---
 ### `jamfAuth.py` Options
-The `jamfAuth.py` script also has two options available for use to help make setup easier, these are **reset** and **setup**.
+The `jamfAuth.py` script also has two options available for use to help make setup easier, these are `reset` and `setup`.
 
 #### Reset Option
 ```#usage
 python3 /path/to/jamfAuth.py reset
 ```
 
-The **reset** option allows you to reset the JSON Configuration file that `jamfAuth.py` uses. The following items in the JSON Config file will be reset:
+The `reset` option allows you to reset the JSON Configuration file that `jamfAuth.py` uses. The following items in the JSON Config file will be reset:
  - apiUserName
  - jamfHostName
  - jamfAPIURL
 
-After the **reset** option is ran, you will be prompted to enter the **Jamf Pro Host Name** and **API Username** on the next run.
+After the `reset` option is ran, you will be prompted to enter the `Jamf Pro Host Name` and `API Username` on the next run.
 
 #### Setup Option
-```#usage
-python3 /path/to/jamfAuth.py setup
+**Usage**
+```
+11:35:32 ➜ JamfAuth git:(main!) python3 jamfAuth.py setup
+Setting up Config..
+   _                  __   _         _   _
+  (_) __ _ _ __ ___  / _| /_\  _   _| |_| |__
+  | |/ _` | '_ ` _ \| |_ //_\\| | | | __| '_ \
+  | | (_| | | | | | |  _/  _  \ |_| | |_| | | |
+ _/ |\__,_|_| |_| |_|_| \_/ \_/\__,_|\__|_| |_|
+|__/ ------ jamfAuth.py (v0.2)
+----------- josh.harvey@jamf.com
+----------- Created: 04/25/22
+----------- Modified: 04/26/22
+
+Enter the Jamf Pro URL (without https://):
+	=> mooncheese.jamfcloud.com
+Enter the Username for API Access:
+	=> mcapi
+[>jamfAuth] Unable to find keychain entry. lets make one shall we?
+What is the password for mcapi:
+[>jamfAuth] API Token saved to keychain.
 ```
 
-The **setup** option allows you to setup the JSON Configuration file that `jamfAuth.py` uses. You can use this option if you would like to avoid being prompted to enter information. 
+The `setup` option allows you to setup the JSON Configuration file that `jamfAuth.py` uses. You can use this option if you would like to avoid being prompted to enter information. 
 
 ---
 ## Requirements
-#### Jamf Pro
+### Jamf Pro
  - A Jamf Pro account that has API Access
 
-#### Python
+### Python
 **Required Python Version:** 3.9 (or newer)
 
 **Required Python Packages:**
@@ -65,12 +93,6 @@ The **setup** option allows you to setup the JSON Configuration file that `jamfA
  - getpass
  - requests
  - keyring
-
----
-## To-Do List
- - [x] Save API Token in the keychain and remove it from the JSON config file
- - [x] Add usage examples
- - [ ] Add additional error handling for 401 errors
 
 ---
 ### Usage

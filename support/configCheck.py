@@ -70,7 +70,7 @@ def user_check(apiUser, jamfSearchConfig, baseAPIURL):
     if apiUser:
         print(f'[Jamf Pro API Username]: {apiUser}')
     else:
-        apiUser = input(f'Enter the Username for API Access: \n')
+        apiUser = input(f'Enter the Username for API Access: \n\t=> ')
     
         try:
             with open(jamfSearchConfig, 'r') as f:

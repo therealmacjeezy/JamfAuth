@@ -23,7 +23,7 @@ def load_config(jamfSearchConfig):
             try:
                 # apiToken = keyring.get_password(apiUser+'API', apiUser)
                 apiToken = keyring.get_password(baseAPIURL, apiUser+'API')
-                print(f'[>jamfAuth] Loaded API Token')
+                # print(f'[>jamfAuth] Loaded API Token')
             except Exception as errorMessage:
                 print(f'[ERROR>jamfAuth] {errorMessage}')
             theURL = baseAPIURL+'auth'
