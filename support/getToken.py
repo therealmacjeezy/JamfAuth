@@ -10,10 +10,11 @@ def check_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig):
                 print('Your token is invalid :(, attempting to renew it.. hold tight..\n')
                 keep_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig)
         else:
-            # print('[Jamf Pro API Token Status]: Valid')
+            print('[Jamf Pro API Token Status]: Valid')
             return apiToken
     else:
         get_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig)
+
 
 def keep_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig):
     theURL = baseAPIURL+'auth/keep-alive'
@@ -25,18 +26,18 @@ def keep_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig):
             get_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig)
             return apiToken
     else:
-        print('Renewed the token successfully.')
+        print('[>jamfAuth] Renewed the API token successfully.')
         return apiToken
 
 def get_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig):
     ## check for stored creds first
     try:
-        print('get_token: looking for local creds..')
-        apiPassword = keyring.get_password(apiUser, apiUser)
+        # print('[>jamfAuth (get_token)] Looking for API Token in the local keychain..')
+        apiPassword = keyring.get_password(baseAPIURL, apiUser)
         if not apiPassword:
-            print('get_token: unable to find keychain entry. lets make one shall we?')
+            print('[>jamfAuth (get_token)] unable to find keychain entry. lets make one shall we?')
             apiPassword = getpass.getpass(f'What is the password for {apiUser}: ')
-            keyring.set_password(apiUser, apiUser, apiPassword)
+            keyring.set_password(baseAPIURL, apiUser, apiPassword)
     except Exception as errorMessage:
         print(f'get_token: error doing keychain things..\n{errorMessage}')
     theURL = baseAPIURL+'auth/token'
@@ -46,15 +47,24 @@ def get_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig):
 
     try:
         apiResponseJSON = apiResponse.json()
+        print(f'status_code: {apiResponse.status_code}')
         try:
             apiToken = apiResponseJSON['token']
 
-            with open(jamfSearchConfig, 'r') as f:
-                data = json.load(f)
+            # apiTokenKeychain = keyring.get_password(apiUser+'API', apiUser)
+            apiTokenKeychain = keyring.get_password(baseAPIURL, apiUser+'API')
 
-            with open(jamfSearchConfig, 'w') as d:
-                data['apiToken'] = apiToken
-                json.dump(data, d)
+            if not apiTokenKeychain:
+                # keyring.set_password(apiUser+'API', apiUser, apiToken)
+                keyring.set_password(baseAPIURL, apiUser+'API', apiToken)
+                print('[>jamfAuth] API Token saved to keychain.')
+
+            # with open(jamfSearchConfig, 'r') as f:
+            #     data = json.load(f)
+
+            # with open(jamfSearchConfig, 'w') as d:
+            #     data['apiToken'] = apiToken
+            #     json.dump(data, d)
 
             validToken = True
             return apiToken

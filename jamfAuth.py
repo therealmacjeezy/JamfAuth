@@ -1,10 +1,12 @@
 ## jamfAuth.py
+## version: 0.2
 ## Josh Harvey - josh.harvey@jamf.com
 ## github.com/therealmacjeezy
 ## created: April 2022
 
 from support.getToken import *
 from support.configCheck import *
+import sys
 
 def load_config(jamfSearchConfig):
     global data
@@ -17,7 +19,13 @@ def load_config(jamfSearchConfig):
             data = json.load(f)
             apiUser = data['apiUserName']
             baseAPIURL = data['jamfAPIURL']
-            apiToken = data['apiToken']
+            # apiToken = data['apiToken']
+            try:
+                # apiToken = keyring.get_password(apiUser+'API', apiUser)
+                apiToken = keyring.get_password(baseAPIURL, apiUser+'API')
+                print(f'[>jamfAuth] Loaded API Token')
+            except Exception as errorMessage:
+                print(f'[ERROR>jamfAuth] {errorMessage}')
             theURL = baseAPIURL+'auth'
     except Exception as errorMessage:
         print(f'ERROR load_config: Load Config] - {errorMessage}')
@@ -27,16 +35,16 @@ def load_config(jamfSearchConfig):
 def startAuth():
     pwd = os.getcwd()
     global jamfSearchConfig
-    jamfSearchConfig = pwd+f'/support/.jamfsearch.json'
+    jamfSearchConfig = pwd+f'/support/.jamfauth.json'
     authHeader = '''   _                  __   _         _   _     
   (_) __ _ _ __ ___  / _| /_\  _   _| |_| |__  
   | |/ _` | '_ ` _ \| |_ //_\\\| | | | __| '_ \ 
   | | (_| | | | | | |  _/  _  \ |_| | |_| | | |
  _/ |\__,_|_| |_| |_|_| \_/ \_/\__,_|\__|_| |_|
-|__/ ------ jamfAuth.py
+|__/ ------ jamfAuth.py (v0.2)
 ----------- josh.harvey@jamf.com
 ----------- Created: 04/25/22
------------ Modified: N/A              
+----------- Modified: 04/26/22              
  '''
 
     print(authHeader)
@@ -51,8 +59,17 @@ def startAuth():
     # print('-----------------------------------------------------------------')
 
 def main():
-    startAuth()
-    print(f'Your API token can be used with the variable apiToken.')
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 'reset':
+            print('Resetting Settings..')
+            reset_config()
+        if sys.argv[1] == 'setup':
+            print('Setting up Config..')
+            startAuth()
+    else:
+        print('no arg')
+        startAuth()
+        # print(f'Your API token can be used with the variable apiToken.')
 
 if __name__ == '__main__':
     main()

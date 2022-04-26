@@ -6,12 +6,27 @@ def check_config(jamfSearchConfig):
         data = {
             'apiUserName' : '',
             'jamfHostName' : '',
-            'jamfAPIURL' : '',
-            'apiToken' : ''
+            'jamfAPIURL' : ''
+            # 'apiToken' : ''
         }
 
         with open(jamfSearchConfig, 'w') as output:
             json.dump(data, output)
+
+
+def reset_config():
+    pwd = os.getcwd()
+    jamfSearchConfig = pwd+f'/support/.jamfauth.json'
+    data = {
+        'apiUserName' : '',
+        'jamfHostName' : '',
+        'jamfAPIURL' : ''
+        # 'apiToken' : ''
+    }
+
+    with open(jamfSearchConfig, 'w') as output:
+        json.dump(data, output)
+
 
 def start_config_check(jamfSearchConfig):
     with open(jamfSearchConfig, 'r') as f:
@@ -56,6 +71,7 @@ def user_check(apiUser, jamfSearchConfig, baseAPIURL):
         print(f'[Jamf Pro API Username]: {apiUser}')
     else:
         apiUser = input(f'Enter the Username for API Access: \n')
+    
         try:
             with open(jamfSearchConfig, 'r') as f:
                 data = json.load(f)
