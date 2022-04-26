@@ -28,7 +28,7 @@ Here is how `jamfAuth.py` works:
 
 
 
-The `API Password` and `API Token` will be stored in the local keychain using the following naming convention:
+The `API Password` and `API Token` will be stored in the local keychain (using the [keyring](https://pypi.org/project/keyring/) python library) with the following naming convention:
 
 **Variable** | **Keychain Naming Convention**
 ---------------- | --------------
