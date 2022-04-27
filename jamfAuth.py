@@ -31,14 +31,14 @@ def header():
   | |/ _` | '_ ` _ \| |_ //_\\\| | | | __| '_ \ 
   | | (_| | | | | | |  _/  _  \ |_| | |_| | | |
  _/ |\__,_|_| |_| |_|_| \_/ \_/\__,_|\__|_| |_|
-|__/ ------ jamfAuth.py (v0.3) [github]
+|__/ ------ jamfAuth.py (v0.3.1) [github]
 ----------- josh.harvey@jamf.com
 ----------- Created: 04/25/22
------------ Modified: 04/26/22              
+----------- Modified: 04/27/22              
  '''
 
     print(authHeader)
-    print(f'> jamfAuth Config Path: {jamfSearchConfig}')  
+    print(f'> jamfAuth Config Path: \n{jamfSearchConfig}\n')  
 
 
 def startAuth():
