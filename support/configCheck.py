@@ -7,7 +7,6 @@ def check_config(jamfSearchConfig):
             'apiUserName' : '',
             'jamfHostName' : '',
             'jamfAPIURL' : ''
-            # 'apiToken' : ''
         }
 
         with open(jamfSearchConfig, 'w') as output:
@@ -21,7 +20,6 @@ def reset_config():
         'apiUserName' : '',
         'jamfHostName' : '',
         'jamfAPIURL' : ''
-        # 'apiToken' : ''
     }
 
     with open(jamfSearchConfig, 'w') as output:

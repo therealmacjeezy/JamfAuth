@@ -5,6 +5,8 @@ def check_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig):
         headers = {'accept': 'application/json', 'Authorization': f'Bearer {apiToken}'}
         apiResponse = requests.get(theURL, headers=headers)
 
+        print(f'status code: {apiResponse.status_code}')
+
         if apiResponse.status_code != 200:
             if apiResponse.status_code == 401:
                 print('[>jamfAuth] Your token is invalid :(, attempting to renew it.. hold tight..\n')
@@ -23,6 +25,7 @@ def keep_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig):
     if apiResponse.status_code != 200:
         if apiResponse.status_code == 401:
             print('[>jamfAuth] Your token is invalid and cannot be renewed. Why dont we get a new one..\n')
+            keyring.delete_password(baseAPIURL, apiUser+'API')
             get_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig)
             return apiToken
     else:
@@ -32,7 +35,6 @@ def keep_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig):
 def get_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig):
     ## check for stored creds first
     try:
-        # print('[>jamfAuth (get_token)] Looking for API Token in the local keychain..')
         apiPassword = keyring.get_password(baseAPIURL, apiUser)
         if not apiPassword:
             print('[>jamfAuth] Unable to find keychain entry. lets make one shall we?')
@@ -50,29 +52,17 @@ def get_token(apiUser, apiToken, theURL, baseAPIURL, jamfSearchConfig):
         try:
             apiToken = apiResponseJSON['token']
 
-            # apiTokenKeychain = keyring.get_password(apiUser+'API', apiUser)
             apiTokenKeychain = keyring.get_password(baseAPIURL, apiUser+'API')
 
             if not apiTokenKeychain:
-                # keyring.set_password(apiUser+'API', apiUser, apiToken)
                 keyring.set_password(baseAPIURL, apiUser+'API', apiToken)
                 print('[>jamfAuth] API Token saved to keychain.')
 
-            # with open(jamfSearchConfig, 'r') as f:
-            #     data = json.load(f)
-
-            # with open(jamfSearchConfig, 'w') as d:
-            #     data['apiToken'] = apiToken
-            #     json.dump(data, d)
-
-            validToken = True
             return apiToken
         except Exception as errorMessage:
             validToken = False
             print(f'ERROR [get_token(apiToken)]: {errorMessage}')
         else:
             print(f'[get_token]: Saved API Token..\n')
-            validToken = True
     except Exception as errorMessage:
         print(f'ERROR [get_token(apiResponseJSON)]: {errorMessage}\n')
-        validToken = False

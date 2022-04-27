@@ -5,7 +5,9 @@ A python script to authenticate with the Jamf Pro API.
 ## To-Do List
  - [x] Save API Token in the keychain and remove it from the JSON config file
  - [x] Add usage examples
- - [ ] Add additional error handling for 401 errors
+ - [ ] Add additional error handling (if a 401 occurs.. etc..)
+ - [x] Create pip install
+ - [ ] Add option to delete the keychain entry (currently manual delete)
 
 ---
 
@@ -36,16 +38,21 @@ The `API Password` and `API Token` will be stored in the local keychain (using t
 **API Token** | service = **JamfProHostName**, username = **API Username**+API, password = **API Token**
 
 
-The `jamfAuth.py` JSON Configuration file is located in the `support` directory in this repository (`/path/to/jamfAuth/support/.jamfauth.json`)
+The `jamfAuth.py` JSON Configuration file is located in the `support` directory:
+ - **Github Install Method:** `/path/to/jamfAuth/support/.jamfauth.json`
+ - **pip Install Method:** `/path/to/pip/site-packages/jamfAuth/support/.jamfauth.json`
 
 ---
 ### `jamfAuth.py` Options
-The `jamfAuth.py` script also has two options available for use to help make setup easier, these are `reset` and `setup`.
+The `jamfAuth.py` script also has two options available for use to help make setup easier, these are `reset` and `setup`. Depending on how you installed `jamfAuth` will depend on how these two options can be called.
 
 #### Reset Option
-```#usage
-python3 /path/to/jamfAuth.py reset
-```
+**Github Install Method**
+`python3 /path/to/jamfAuth.py reset`
+
+
+**pip Install Method**
+`python3 -c 'from jamfAuth import *; reset_config()'`
 
 The `reset` option allows you to reset the JSON Configuration file that `jamfAuth.py` uses. The following items in the JSON Config file will be reset:
  - apiUserName
@@ -55,7 +62,7 @@ The `reset` option allows you to reset the JSON Configuration file that `jamfAut
 After the `reset` option is ran, you will be prompted to enter the `Jamf Pro Host Name` and `API Username` on the next run.
 
 #### Setup Option
-**Usage**
+**Github Install Method**
 ```
 11:35:32 ➜ JamfAuth git:(main!) python3 jamfAuth.py setup
 Setting up Config..
@@ -64,7 +71,7 @@ Setting up Config..
   | |/ _` | '_ ` _ \| |_ //_\\| | | | __| '_ \
   | | (_| | | | | | |  _/  _  \ |_| | |_| | | |
  _/ |\__,_|_| |_| |_|_| \_/ \_/\__,_|\__|_| |_|
-|__/ ------ jamfAuth.py (v0.2)
+|__/ ------ jamfAuth.py (v0.2.1)
 ----------- josh.harvey@jamf.com
 ----------- Created: 04/25/22
 ----------- Modified: 04/26/22
@@ -78,7 +85,24 @@ What is the password for mcapi:
 [>jamfAuth] API Token saved to keychain.
 ```
 
+**pip Install Method**
+
+`python3 -c 'from jamfAuth import *; startAuth()'`
+
 The `setup` option allows you to setup the JSON Configuration file that `jamfAuth.py` uses. You can use this option if you would like to avoid being prompted to enter information. 
+
+---
+## Installation
+There are two ways to install `jamfAuth`, **Github** or **pip**.
+
+### pip Method *[Recommended]*
+This method will install `jamfAuth` **and** all of the required packages. Using this method will allow you to import and use `jamfAuth` without having to copy the `jamfAuth` directory into the project your going to use it with. 
+ - `pip3 install jamfAuth`
+   - [PyPi URL](https://test.pypi.org/project/jamfAuth/)
+
+### Github Method
+This method will clone the `jamfAuth` code to your system. When using this method, you will need to install the required Python3 packages manually.
+ - `git clone https://github.com/therealmacjeezy/JamfAuth.git`
 
 ---
 ## Requirements
@@ -86,19 +110,21 @@ The `setup` option allows you to setup the JSON Configuration file that `jamfAut
  - A Jamf Pro account that has API Access
 
 ### Python
-**Required Python Version:** 3.9 (or newer)
+**Python Version** | **Supported**
+------------------ | -------------
+3.8.9 | ✅ *(Supported)*
+3.9.x | ⚠️ *(Not Tested)*
+3.10.x | ✅ *(Supported)*
 
 **Required Python Packages:**
- - json
- - getpass
- - requests
- - keyring
+ - `pip3 install requests`
+ - `pip3 install keyring`
 
 ---
 ### Usage
-Clone or download this repo: `git clone https://github.com/therealmacjeezy/JamfAuth.git`
-
 To use `jamfAuth.py` with your script, import `jamfAuth` and set the `startAuth()` function to a variable to store the API Token. See the example below
+
+**Note:** If you used the **Github** method to install `jamfAuth`, you will need to copy the `jamfAuth` directory into the root directory of the script you are going to be using it with. If you used the `pip` method, you can just import `jamfAuth` as normal.
 
 ```
 from jamfAuth import *

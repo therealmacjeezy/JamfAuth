@@ -3,7 +3,7 @@ import xmltodict
 
 apiToken = startAuth() ## <-- This is the variable that is used to capture the API Token
 
-jamfHostName = 'mooncheese.jamfcloud.com'
+jamfHostName = 'benderisgreat.jamfcloud.com'
 
 if apiToken:
     headers = {'accept': 'application/xml', 'Authorization': f'Bearer {apiToken}'} ## <-- apiToken being used to authenticate the API Call
@@ -17,6 +17,7 @@ if apiToken:
     example1XML = xmltodict.parse(example1.text)
 
     print(json.dumps(example1XML))
+
 
 
     print(f'\n### >> Example 2: List all Packages')
