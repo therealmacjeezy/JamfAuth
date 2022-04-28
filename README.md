@@ -1,6 +1,7 @@
 # JamfAuth
 
 A python script to authenticate with the Jamf Pro API.
+[jamfAuth Examples](examples/README.md)
 
 **Current Version:** v0.3.1
 
@@ -130,95 +131,5 @@ if apiPassword:
     print('You can now use the apiToken variable to authenticate with your Jamf Pro API.')
     print(f'apiToken: \n{apiPassword}')
 ```
-
 #### Examples
-Below is an example script that shows how to use `jamfAuth.py` and the API Token it gets. 
-
-The first example performs a search for all computers that contain the word **admin** in it and returns the results via XML.
-
-The second example performs a search for all packages in Jamf Pro and returns the results via XML.
-
-The third example shows the `jamfAuth setup` option.
-
-**example.py**
-```
-## example.py
-from jamfAuth import * ## <-- Import jamfAuth
-import xmltodict
-
-apiToken = startAuth() ## <-- This is the variable that is used to capture the API Token
-
-jamfHostName = 'benderisgreat.jamfcloud.com'
-
-if apiToken:
-    headers = {'accept': 'application/xml', 'Authorization': f'Bearer {apiToken}'} ## <-- apiToken being used to authenticate the API Call
-
-    print('### >> Example 1: Search for Computers that contain *admin*')
-    apiURL1 = f'https://{jamfHostName}/JSSResource/computers/match/*admin*'
-    example1 = requests.get(apiURL1, headers=headers)
-
-    print(f'Status Code: {example1.status_code}')
-
-    example1XML = xmltodict.parse(example1.text)
-
-    print(json.dumps(example1XML))
-
-
-    print(f'\n### >> Example 2: List all Packages')
-    apiURL2 = f'https://{jamfHostName}/JSSResource/packages'
-    example2 = requests.get(apiURL2, headers=headers)
-
-    print(f'Status Code: {example2.status_code}')
-    
-    example2XML = xmltodict.parse(example2.text)
-
-    print(json.dumps(example2XML))
-```
-
-**example.py Output**
-```10:43:37 ➜ JamfAuth git:(main!?) python3 example.py
-   _                  __   _         _   _
-  (_) __ _ _ __ ___  / _| /_\  _   _| |_| |__
-  | |/ _` | '_ ` _ \| |_ //_\\| | | | __| '_ \
-  | | (_| | | | | | |  _/  _  \ |_| | |_| | | |
- _/ |\__,_|_| |_| |_|_| \_/ \_/\__,_|\__|_| |_|
-|__/ ------ jamfAuth.py
------------ josh.harvey@jamf.com
------------ Created: 04/25/22
------------ Modified: N/A
-
-[Jamf Pro Host Name]: benderisgreat.jamfcloud.com
-[Jamf Pro API URL]: https://benderisgreat.jamfcloud.com/api/v1/
-[Jamf Pro API Username]: mcapi
-[>jamfAuth] Loaded API Token
-[Jamf Pro API Token Status]: Valid
-### >> Example 1: Search for Computers that contain *admin*
-Status Code: 200
-{"computers": {"size": "1", "computer": {"id": "1", "name": "ladmin\u2019s MacBook Pro", "udid": "B71D8D21-AFF8-5ED3-B7F1-BB1488CBC8D1", "serial_number": "C02T39SEGTFM", "mac_address": "78:4F:43:64:17:E8", "alt_mac_address": "82:49:6E:C3:E0:01", "asset_tag": null, "bar_code_1": null, "bar_code_2": null, "username": "josh.harvey", "realname": "Josh Harvey", "email": "josh.harvey@jamf.com", "email_address": "josh.harvey@jamf.com", "room": null, "position": null, "building": null, "building_name": null, "department": null, "department_name": null}}}
-
-### >> Example 2: List all Packages
-Status Code: 200
-{"packages": {"size": "2", "package": [{"id": "1", "name": "Jamf Connect [2.11]"}, {"id": "2", "name": "JamfProtect-3.1.6+469.pkg"}]}}
-```
-**jamfAuth setup Example**
-```
-11:35:32 ➜ JamfAuth git:(main!) python3 jamfAuth.py setup
-Setting up Config..
-   _                  __   _         _   _
-  (_) __ _ _ __ ___  / _| /_\  _   _| |_| |__
-  | |/ _` | '_ ` _ \| |_ //_\\| | | | __| '_ \
-  | | (_| | | | | | |  _/  _  \ |_| | |_| | | |
- _/ |\__,_|_| |_| |_|_| \_/ \_/\__,_|\__|_| |_|
-|__/ ------ jamfAuth.py (v0.2.1)
------------ josh.harvey@jamf.com
------------ Created: 04/25/22
------------ Modified: 04/26/22
-
-Enter the Jamf Pro URL (without https://):
-	=> mooncheese.jamfcloud.com
-Enter the Username for API Access:
-	=> mcapi
-[>jamfAuth] Unable to find keychain entry. lets make one shall we?
-What is the password for mcapi:
-[>jamfAuth] API Token saved to keychain.
-```
+I created a few example scripts in both `python` and `bash` to show how easy it is to use jamfAuth in your script. Check out the **examples** directory or view the [examples README.md](examples/README.md) to see them.
