@@ -1,3 +1,8 @@
+### v0.3.2 (2022/04/28)
+**Minor Changes**
+ - Changed python classifier from **beta** to **production/stable**
+ - Updated README.md with example scripts
+
 ### v0.3.1 (2022/04/27)
 **New Features**
  - Added error handling to `getToken.py` to better manage the HTTP status codes inside the `getToken()` function.

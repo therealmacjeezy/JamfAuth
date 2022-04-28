@@ -4,7 +4,7 @@ A python script to authenticate with the Jamf Pro API.
 
 [jamfAuth Examples](examples/README.md)
 
-**Current Version:** v0.3.1
+**Current Version:** v0.3.2
 
 ### Supported Operating Systems
 **Operating System** | **Status**
