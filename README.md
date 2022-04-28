@@ -89,7 +89,7 @@ There are two ways to install `jamfAuth`: **Github** or **pip**.
 This method will install `jamfAuth` **and** all of the required packages. Using this method will allow you to import and use `jamfAuth` without having to copy the `jamfAuth` directory into the project your going to use it with. 
 
  - `pip3 install jamfAuth`
-   - [PyPi URL](https://test.pypi.org/project/jamfAuth/)
+   - [PyPi URL](https://pypi.org/project/jamfAuth/)
 
 ### Github Method
 This method will clone the `jamfAuth` code to your system. When using this method, you will need to install the required Python3 packages manually.
