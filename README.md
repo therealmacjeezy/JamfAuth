@@ -4,13 +4,17 @@ A python script to authenticate with the Jamf Pro API.
 
 [jamfAuth Examples](examples/README.md)
 
-**Current Version:** v0.3.2
+**Current Version:** v0.3.3
 
 ### Supported Operating Systems
-**Operating System** | **Status**
--------------------- | ----------
-**macOS Monterey (12.1)** | ✅ *(Supported)*
-**Oracle Linux 8** | ⚠️ *(Being Tested)*
+**Operating System** | **Version** | **Status** | **Notes**
+-------------------- | ---------- | --------- | ----------
+**macOS Monterey** | macOS 12.x | ✅ *(Supported)* | None
+**RedHat Enterprise Linux (RHEL)** | 9 (Beta) | ✅ *(Supported in 0.3.3+)* | *Requires keychains.alt package*
+**RedHat Enterprise Linux (RHEL)** | 8 | ⚠️ *(Needs Testing)* | None
+**CentOS Stream** | 8 | ⚠️ *(Needs Testing)* | None
+**Oracle Linux** | 8 | ⚠️ *(Needs Testing)* | None
+**Ubuntu Server** | 20.04.4 LTS | ✅ *(Supported in 0.3.3+)* | *Requires keychains.alt package*
 
 ---
 ## Overview
@@ -113,11 +117,17 @@ This method will clone the `jamfAuth` code to your system. When using this metho
 
 **Required Python Packages:**
 
- - `pip3 install requests`
- - `pip3 install keyring`
+ - **requests**
+   - `pip3 install requests`
+ - **keyring**
+   - `pip3 install keyring`
+ - **keyrings.alt** *(Linux ONLY)*
+   - `pip3 install keyrings.alt`
 
 ---
 ### Usage
+Once installed, you'll need to configure `jamfAuth` by using the **setup** option (see **Setup Option** section above). This will create the jamfAuth configuration file and the keychain entries. Once it's setup, you're ready to start playing with API Calls!
+
 To use `jamfAuth` with your script, import `jamfAuth` and set the `startAuth()` function to a variable to store the API Token. See the example below
 
 **Note:** 
