@@ -117,6 +117,11 @@ This method will clone the `jamfAuth` code to your system. When using this metho
 
 **Required Python Packages:**
 
+To install all of the required Python packages at once, use the `requirements.txt` file to install them using the command below:
+
+`pip3 install -r requirements.txt`
+
+**Individual Packages**
  - **requests**
    - `pip3 install requests`
  - **keyring**
