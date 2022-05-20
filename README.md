@@ -10,6 +10,7 @@ A python script to authenticate with the Jamf Pro API.
 **Operating System** | **Version** | **Status** | **Notes**
 -------------------- | ---------- | --------- | ----------
 **macOS Monterey** | macOS 12.x | ✅ *(Supported)* | None
+**Windows Server** | 2022 | ✅ *(Supported in 0.3.3+)* | None
 **RedHat Enterprise Linux (RHEL)** | 9 (Beta) | ✅ *(Supported in 0.3.3+)* | *Requires keychains.alt package*
 **RedHat Enterprise Linux (RHEL)** | 8 | ⚠️ *(Needs Testing)* | None
 **CentOS Stream** | 8 | ⚠️ *(Needs Testing)* | None
