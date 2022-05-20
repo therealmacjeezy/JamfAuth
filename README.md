@@ -12,9 +12,9 @@ A python script to authenticate with the Jamf Pro API.
 **macOS Monterey** | macOS 12.x | ✅ *(Supported)* | None
 **Windows Server** | 2022 | ✅ *(Supported in 0.3.3+)* | None
 **RedHat Enterprise Linux (RHEL)** | 9 (Beta) | ✅ *(Supported in 0.3.3+)* | *Requires keychains.alt package*
-**RedHat Enterprise Linux (RHEL)** | 8 | ⚠️ *(Needs Testing)* | None
+**RedHat Enterprise Linux (RHEL)** | 8 | ✅ *(Supported in 0.3.3+)* | *Requires keychains.alt package*
 **CentOS Stream** | 8 | ⚠️ *(Needs Testing)* | None
-**Oracle Linux** | 8 | ⚠️ *(Needs Testing)* | None
+**Oracle Linux** | 8 | ✅ *(Supported in 0.3.3+)* | *Requires keychains.alt package*
 **Ubuntu Server** | 20.04.4 LTS | ✅ *(Supported in 0.3.3+)* | *Requires keychains.alt package*
 
 ---
