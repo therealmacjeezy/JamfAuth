@@ -8,19 +8,23 @@ startAuth() {
     ### Use jamfAuth to start and handle the API Authentication
     python3 -c 'from jamfAuth import *; startAuth()'
 
+    jamfHostname=$(grep -o '"jamfHostName": "[^"]*' /home/ubuntu/.local/lib/python3.8/site-packages/jamfAuth/support/.jamfauth.json | grep -o '[^"]*$')
+
+    apiUsername=$(grep -o '"apiUserName": "[^"]*' /home/ubuntu/.local/lib/python3.8/site-packages/jamfAuth/support/.jamfauth.json | grep -o '[^"]*$')
+
     ### Use python3's keyring to get the API Token from the keychain
-    apiToken=$(python3 -c 'import keyring; print(keyring.get_password("https://benderisgreat.jamfcloud.com/api/v1/", "mcfryAPI"))')
+    apiToken=$(python3 -c 'import keyring; print(keyring.get_password("https://'$jamfHostname'/api/v1/", "'${apiUsername}API'"))')
 }
 
 ### Call the function
 startAuth
 
 ### Get the Jamf Computer ID for this system using the serial number
-computerID=$(curl -s "https://benderisgreat.jamfcloud.com/api/v1/computers-inventory?section=HARDWARE&filter=hardware.serialNumber==$serialNumber" -H "accept: application/json" -H "Authorization: Bearer $apiToken" | jq '.results[0].id'| tr -d '"')
+computerID=$(curl -s "https://$jamfHostName/api/v1/computers-inventory?section=HARDWARE&filter=hardware.serialNumber==$serialNumber" -H "accept: application/json" -H "Authorization: Bearer $apiToken" | jq '.results[0].id'| tr -d '"')
 
 if [[ ! -z "$computerID" ]]; then
     ### Redeploy the MDM Profile using the Jamf Computer ID
-    redeployMDM=$(curl -s "https://benderisgreat.jamfcloud.com/api/v1/jamf-management-framework/redeploy/$computerID" -H "accept: application/json" -H "Authorization: Bearer $apiToken" -X POST)
+    redeployMDM=$(curl -s "https://$jamfHostName/api/v1/jamf-management-framework/redeploy/$computerID" -H "accept: application/json" -H "Authorization: Bearer $apiToken" -X POST)
     if [[ "$?" == "0" ]]; then
         echo "MDM Profile has been redeployed successfully to the system with serial number $serialNumber."
     fi

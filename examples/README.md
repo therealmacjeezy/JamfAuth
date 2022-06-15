@@ -22,8 +22,12 @@ startAuth() {
     ### Use jamfAuth to start and handle the API Authentication
     python3 -c 'from jamfAuth import *; startAuth()'
 
+    jamfHostname=$(grep -o '"jamfHostName": "[^"]*' /path/to/jamfAuth/support/.jamfauth.json | grep -o '[^"]*$')
+
+    apiUsername=$(grep -o '"apiUserName": "[^"]*' /path/to/jamfAuth/support/.jamfauth.json | grep -o '[^"]*$')
+
     ### Use python3's keyring to get the API Token from the keychain
-    apiToken=$(python3 -c 'import keyring; print(keyring.get_password("https://benderisgreat.jamfcloud.com/api/v1/", "mcfryAPI"))')
+    apiToken=$(python3 -c 'import keyring; print(keyring.get_password("https://'$jamfHostname'/api/v1/", "'${apiUsername}API'"))')
 }
 
 ### Call the function
