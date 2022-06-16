@@ -1,9 +1,9 @@
 # jamfAuth Examples
 
 ## Usage Examples
-Below are two examples of how to use jamfAuth with your script. For complete example scripts, see the **Script Examples** section below. 
+Below are four examples of how to use jamfAuth with your script. For complete example scripts, see the **Script Examples** section below. 
 
-### python
+### python [production server]
 ```python
 from jamfAuth import *
 
@@ -13,7 +13,17 @@ apiToken=startAuth()
 #[...continue with script...]
 ```
 
-### bash
+### python [development server]
+```python
+from jamfAuth import *
+
+### Use jamfAuth to start and handle the API Authentication then save it as the variable "apiToken"
+apiToken=startAuth("dev")
+
+#[...continue with script...]
+```
+
+### bash [production server]
 ```shell
 #!/bin/bash
 
@@ -21,6 +31,29 @@ apiToken=startAuth()
 startAuth() {
     ### Use jamfAuth to start and handle the API Authentication
     python3 -c 'from jamfAuth import *; startAuth()'
+
+    jamfHostname=$(grep -o '"jamfHostName": "[^"]*' /path/to/jamfAuth/support/.jamfauth.json | grep -o '[^"]*$')
+
+    apiUsername=$(grep -o '"apiUserName": "[^"]*' /path/to/jamfAuth/support/.jamfauth.json | grep -o '[^"]*$')
+
+    ### Use python3's keyring to get the API Token from the keychain
+    apiToken=$(python3 -c 'import keyring; print(keyring.get_password("https://'$jamfHostname'/api/v1/", "'${apiUsername}API'"))')
+}
+
+### Call the function
+startAuth
+
+#[...continue with script...]
+```
+
+### bash [development server]
+```shell
+#!/bin/bash
+
+### This function kicks off jamfAuth and captures the API Token saved in the keychain
+startAuth() {
+    ### Use jamfAuth to start and handle the API Authentication
+    python3 -c 'from jamfAuth import *; startAuth("dev")'
 
     jamfHostname=$(grep -o '"jamfHostName": "[^"]*' /path/to/jamfAuth/support/.jamfauth.json | grep -o '[^"]*$')
 

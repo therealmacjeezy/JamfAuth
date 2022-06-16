@@ -22,30 +22,38 @@ def load_config(jamfSearchConfig):
     except Exception as errorMessage:
         print(f'ERROR load_config: Load Config] - {errorMessage}')
 
-def header():
+def header(instance=""):
     pwd = os.getcwd()
     global jamfSearchConfig
-    jamfSearchConfig = pwd+f'/support/.jamfauth.json'
+    if instance == "dev":
+        jamfSearchConfig = pwd+f'/support/.jamfauth.json'
+    else:
+        jamfSearchConfig = pwd+f'/support/.jamfauth-dev.json'
+
     authHeader = '''   _                  __   _         _   _     
   (_) __ _ _ __ ___  / _| /_\  _   _| |_| |__  
   | |/ _` | '_ ` _ \| |_ //_\\\| | | | __| '_ \ 
   | | (_| | | | | | |  _/  _  \ |_| | |_| | | |
  _/ |\__,_|_| |_| |_|_| \_/ \_/\__,_|\__|_| |_|
-|__/ ------ jamfAuth.py (v0.3.3) [github]
+|__/ ------ jamfAuth.py (v0.3.4) [github]
 ----------- josh.harvey@jamf.com
 ----------- Created: 04/25/22
------------ Modified: 04/29/22              
+----------- Modified: 06/16/22              
  '''
 
     print(authHeader)
     print(f'> jamfAuth Config Path: \n{jamfSearchConfig}\n')  
 
 
-def startAuth():
-    header()
+def startAuth(instance=""):
+    header(instance)
     pwd = os.getcwd()
     global jamfSearchConfig
-    jamfSearchConfig = pwd+f'/support/.jamfauth.json'
+    ## Adding support for a development server
+    if instance == "dev":
+        jamfSearchConfig = pwd+f'/support/.jamfauth.json'
+    else:
+        jamfSearchConfig = pwd+f'/support/.jamfauth-dev.json'
 
     #start config check
     check_config(jamfSearchConfig)
@@ -58,11 +66,17 @@ def startAuth():
 def main():
     if len(sys.argv) > 1:
         if sys.argv[1] == 'reset':
-            print('Resetting Settings..')
+            print('[>jamfAuth]: Resetting Settings for Production..')
             reset_config()
+        if sys.argv[1] == 'reset-dev':
+            print('[>jamfAuth]: Resetting Settings for Dev..')
+            reset_config("dev")
         if sys.argv[1] == 'setup':
-            print('Setting up Config..')
+            print('[>jamfAuth]: Setting up Config for Production..')
             startAuth()
+        if sys.argv[1] == 'setup-dev':
+            print('[>jamfAuth]: Setting up Config for Dev..')
+            startAuth("dev")
     else:
         print('no arg')
         startAuth()

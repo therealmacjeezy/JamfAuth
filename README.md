@@ -4,7 +4,9 @@ A python script to authenticate with the Jamf Pro API.
 
 [jamfAuth Examples](examples/README.md)
 
-**Current Version:** v0.3.3
+**Current Version:** v0.3.4
+
+> Starting with version 0.3.4, you now have the option to use `jamfAuth` with a development server. By default, `jamfAuth` will function as normal. If you want to use `jamfAuth` with your development server, you will need to add **"dev"** inside the `startAuth()` function (ie: `startAuth("dev")`). See the usage and example section for more details.
 
 ### Supported Operating Systems
 **Operating System** | **Version** | **Status** | **Notes**
@@ -47,10 +49,17 @@ The `API Password` and `API Token` will be stored in the local keychain (using t
 
 The `jamfAuth` JSON Configuration file is located in the `support` directory:
 
+**PRODUCTION**
 **Install Method** | **Configuration File Location**
 ------------------ | ------------------------------
 **Github** | `/path/to/jamfAuth/support/.jamfauth.json`
 **pip** | `/path/to/pip/site-packages/jamfAuth/support/.jamfauth.json`
+
+**DEV**
+**Install Method** | **Command**
+------------------ | ------------------------------
+**Github** | `/path/to/jamfAuth/support/.jamfauth-dev.json`
+**pip** | `/path/to/pip/site-packages/jamfAuth/support/.jamfauth-dev.json`
 
 ---
 ### jamfAuth Options
@@ -58,10 +67,18 @@ The `jamfAuth` script also has two options available for use to help make setup 
 
 #### Reset Option
 
+**PRODUCTION**
 **Install Method** | **Command**
 ------------------ | ------------------------------
 **Github** | `python3 /path/to/jamfAuth.py reset`
 **pip** | `python3 -c 'from jamfAuth import *; reset_config()'`
+
+
+**DEV**
+**Install Method** | **Command**
+------------------ | ------------------------------
+**Github** | `python3 /path/to/jamfAuth.py reset-dev`
+**pip** | `python3 -c 'from jamfAuth import *; reset_config("dev")'`
 
 The `reset` option allows you to reset the JSON Configuration file that `jamfAuth` uses. The following items in the JSON Config file will be reset:
  - apiUserName
@@ -72,12 +89,27 @@ After the `reset` option is ran, you will be prompted to enter the `Jamf Pro Hos
 
 #### Setup Option
 
+**PRODUCTION**
 **Install Method** | **Command**
 ------------------ | ------------------------------
 **Github** | `python3 /path/to/jamfAuth.py setup`
 **pip** | `python3 -c 'from jamfAuth import *; startAuth()'`
 
+**DEV**
+**Install Method** | **Command**
+------------------ | ------------------------------
+**Github** | `python3 /path/to/jamfAuth.py setup-dev`
+**pip** | `python3 -c 'from jamfAuth import *; startAuth("dev")'`
+
+
 The `setup` option allows you to setup the JSON Configuration file that `jamfAuth.py` uses. You can use this option if you would like to avoid being prompted to enter information. 
+
+---
+#### Delete Keychain
+
+Currently, deleting the keychain is a manual process. I plan on building this into `jamfAuth` to make it easier to do, but until then, use the command below to delete the keychain for your API account:
+
+`python3 -c 'import keyring; keyring.delete_password("https://<JAMF_PRO_INSTANCE>/api/v1/", "<API_USERNAME>")'`
 
 ----
 ## To-Do List
@@ -86,7 +118,8 @@ The `setup` option allows you to setup the JSON Configuration file that `jamfAut
  - [x] Add additional error handling (if a 401 occurs.. etc..)
  - [x] Create pip install
  - [ ] Add option to delete the keychain entry (currently manual delete)
- - [ ] Add additional OS support (linux, windows)
+ - [x] Add additional OS support (linux, windows)
+ - [x] Add support for a development server
 
 ---
 ## Installation
@@ -142,11 +175,16 @@ To use `jamfAuth` with your script, import `jamfAuth` and set the `startAuth()` 
 ```
 from jamfAuth import *
 
+#### PRODUCTION SERVER EXAMPLE
 apiPassword = startAuth()
+
+#### DEVELOPMENT SERVER EXAMPLE
+apiPassword = startAuth("dev")
 
 if apiPassword:
     print('You can now use the apiToken variable to authenticate with your Jamf Pro API.')
     print(f'apiToken: \n{apiPassword}')
 ```
+
 #### Examples
 I created a few example scripts in both `python` and `bash` to show how easy it is to use jamfAuth in your script. Check out the **examples** directory or view the [examples README.md](examples/README.md) to see them.

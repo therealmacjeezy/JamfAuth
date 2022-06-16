@@ -13,9 +13,13 @@ def check_config(jamfSearchConfig):
             json.dump(data, output)
 
 
-def reset_config():
+def reset_config(instance=""):
     pwd = os.getcwd()
-    jamfSearchConfig = pwd+f'/support/.jamfauth.json'
+    if instance == "dev":
+        jamfSearchConfig = pwd+f'/support/.jamfauth.json'
+    else:
+        jamfSearchConfig = pwd+f'/support/.jamfauth-dev.json'
+
     data = {
         'apiUserName' : '',
         'jamfHostName' : '',

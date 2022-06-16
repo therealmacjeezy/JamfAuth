@@ -1,3 +1,9 @@
+### v0.3.4 (2022/06/16)
+**New Feature**
+ - Added development server support
+**Minor Changes**
+ - Updated README.md with manual way to delete keychain items
+
 ### v0.3.3 (2022/04/29)
 **New Features**
  - Added support for the following Operating Systems:
